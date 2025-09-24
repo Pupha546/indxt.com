@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tim rapter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d0d0d;
+            --secondary-color: #f0f0f0;
+            --accent-color: #ff4500; /* สีส้มแดงสำหรับปุ่มและไฮไลท์ */
+            --text-color: #e0e0e0;
+            --light-text-color: #ffffff;
+            --font-family: 'Prompt', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .navbar a {
+            color: var(--light-text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 8rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            color: var(--light-text-color);
+            position: relative;
+        }
+
+        .page-header::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 10px auto 0;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .product-card {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer; /* เพิ่ม cursor: pointer เพื่อให้ดูเหมือนปุ่ม */
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .product-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light-text-color);
+            cursor: pointer; /* เพิ่ม cursor: pointer */
+        }
+
+        .buy-button {
+            background-color: var(--accent-color);
+            color: var(--light-text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background-color: #ff6347;
+        }
+
+        /* Checkout Section */
+        .checkout-container, .history-container {
+            background-color: #1a1a1a;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        .checkout-container h2, .history-container h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--light-text-color);
+            position: relative;
+            text-align: center;
+        }
+
+        .checkout-container h2::after, .history-container h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+            margin: 10px auto 0;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .cart-item button:hover {
+            background: #c82333;
+        }
+
+        .total {
+            text-align: right;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Form */
+        .form-group {
+            margin-top: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background-color: #2a2a2a;
+            color: var(--text-color);
+        }
+
+        .payment-method {
+            margin-top: 2rem;
+        }
+        
+        .payment-method label {
+            margin-right: 1.5rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .checkout-btn, .history-btn, .clear-history-btn {
+            margin-top: 1.5rem;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .checkout-btn { background: #007bff; float: right; }
+        .checkout-btn:hover { background: #0056b3; }
+        .history-btn { background: #6c757d; float: left; }
+        .history-btn:hover { background: #5a6268; }
+        .clear-history-btn { background: #dc3545; float: right; margin-left: 10px; }
+        .clear-history-btn:hover { background: #c82333; }
+        .clearfix { clear: both; }
+
+        #installment-info {
+            margin-top: 5px;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        /* Product Detail Page Styles */
+        #product-detail-page {
+            display: none; /* ซ่อนหน้ารายละเอียดเริ่มต้น */
+        }
+        
+        .product-detail-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            background-color: #1a1a1a;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .product-image-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .product-image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-info-detail {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .product-info-detail h1 {
+            font-size: 2.5rem;
+            color: var(--light-text-color);
+            margin-bottom: 1rem;
+        }
+        
+        .product-info-detail .price {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .product-info-detail .specs ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .product-info-detail .specs li {
+            background-color: #2a2a2a;
+            margin-bottom: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 5px;
+        }
+        
+        .back-button {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+        }
+        
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="ติ๋มกับภูผาคนหล่อ1.html">หน้าแรก</a>
+    <a href="ติ๋มกับภูผาคนหล่อ2.html">สินค้าทั้งหมด</a>
+    <a href="ติ๋มกับภูผาคนหล่อ3.html">สินค้าขายดี</a>
+    <a href="ติ๋มกับภูผาคนหล่อ4.html">โปรโมชั่น</a>
+    <a href="ติ๋มกับภูผาคนหล่อ5.html">ติดต่อเรา</a>
+</nav>
+
+<div class="main-content">
+    <div id="product-list-page">
+        <h1 class="page-header">สินค้าทั้งหมด</h1>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="img/ติ๋ม1.png" alt="Toyota GR Supra" onclick="showProductDetail('phara-supra')">
+                <div class="product-info">
+                    <h3 onclick="showProductDetail('phara-supra')">Phara GR Supra</h3>
+                    <p>ราคา: 8,500,000 บาท</p>
+                    <button class="buy-button" onclick="addToCart('Phara GR Supra', 8500000)">เพิ่มลงตะกร้า</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="img/ติ๋ม2.png" alt="Toyota GR Supra" onclick="showProductDetail('thara-supra')">
+                <div class="product-info">
+                    <h3 onclick="showProductDetail('thara-supra')">Thara GR Supra</h3>
+                    <p>ราคา: 10,500,000 บาท</p>
+                    <button class="buy-button" onclick="addToCart('Thara GR Supra', 10500000)">เพิ่มลงตะกร้า</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="img/ติ๋ม3.png" alt="Toyota Camry" onclick="showProductDetail('sakra-camry')">
+                <div class="product-info">
+                    <h3 onclick="showProductDetail('sakra-camry')">Sakra Camry</h3>
+                    <p>ราคา: 850,000 บาท</p>
+                    <button class="buy-button" onclick="addToCart('Sakra Camry', 850000)">เพิ่มลงตะกร้า</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="img/ติ๋ม4.png" alt="Toyota Fortuner" onclick="showProductDetail('vora-fortuner')">
+                <div class="product-info">
+                    <h3 onclick="showProductDetail('vora-fortuner')">Vora Fortuner</h3>
+                    <p>ราคา: 800,000 บาท</p>
+                    <button class="buy-button" onclick="addToCart('Vora Fortuner', 800000)">เพิ่มลงตะกร้า</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-container">
+            <h2>🛒 ตะกร้าสินค้า</h2>
+            <div id="cart-items"></div>
+            <div class="total" id="total">รวม: 0 บาท</div>
+
+            <div class="form-group">
+                <label for="buyer-name">ชื่อผู้ซื้อ:</label>
+                <input type="text" id="buyer-name" placeholder="กรอกชื่อ" required>
+            </div>
+            <div class="form-group">
+                <label for="buyer-phone">เบอร์โทรศัพท์:</label>
+                <input type="tel" id="buyer-phone" placeholder="กรอกเบอร์โทร" required>
+            </div>
+            <div class="form-group">
+                <label for="buyer-email">อีเมล:</label>
+                <input type="email" id="buyer-email" placeholder="กรอกอีเมล" required>
+            </div>
+
+            <div class="payment-method">
+                <label><input type="radio" name="payment" value="โอนผ่านบัญชีธนาคาร" checked> โอนผ่านบัญชีธนาคาร</label>
+                <label><input type="radio" name="payment" value="บัตรเครดิต"> บัตรเครดิต</label>
+                <label><input type="radio" name="payment" value="เงินสดปลายทาง"> เงินสดปลายทาง</label>
+                <label><input type="radio" name="payment" value="ผ่อนชำระ"> ผ่อนชำระ</label>
+            </div>
+
+            <div class="form-group" id="installment-group" style="display:none;">
+                <label for="installment-months">จำนวนงวดผ่อน (เดือน):</label>
+                <input type="number" id="installment-months" min="1" max="36" placeholder="เช่น 6">
+                <div id="installment-info"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="pickup-date">วันที่นัดรับรถ:</label>
+                <input type="date" id="pickup-date" required>
+            </div>
+            <div class="form-group">
+                <label for="pickup-time">ช่วงเวลานัดรับรถ:</label>
+                <select id="pickup-time" required>
+                    <option value="">-- กรุณาเลือกช่วงเวลา --</option>
+                    <option value="เช้า 9:00 - 12:00">เช้า 9:00 - 12:00</option>
+                    <option value="บ่าย 13:00 - 16:00">บ่าย 13:00 - 16:00</option>
+                    <option value="เย็น 17:00 - 19:00">เย็น 17:00 - 19:00</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pickup-location">สถานที่นัดรับรถ:</label>
+                <input type="text" id="pickup-location" placeholder="กรอกสถานที่นัดรับ" required>
+            </div>
+
+            <button class="checkout-btn" onclick="checkout()">ชำระเงิน</button>
+            <button class="history-btn" onclick="showHistory()">ดูประวัติ</button>
+            <button class="clear-history-btn" onclick="clearHistory()">ล้างประวัติ</button>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="history-container">
+            <h2>📜 ประวัติคำสั่งซื้อ</h2>
+            <div id="history-list">ยังไม่มีประวัติการสั่งซื้อ</div>
+        </div>
+    </div>
+    
+    <div id="product-detail-page">
+        <button class="back-button" onclick="showPage('product-list-page')">← กลับไปหน้าสินค้าทั้งหมด</button>
+        <div class="product-detail-container">
+            <div class="product-image-container">
+                <img id="detail-img" src="" alt="">
+            </div>
+            <div class="product-info-detail">
+                <h1 id="detail-name"></h1>
+                <p class="price" id="detail-price"></p>
+                <h3>ข้อมูลจำเพาะ</h3>
+                <div class="specs">
+                    <ul id="detail-specs"></ul>
+                </div>
+                <h3>คุณสมบัติเด่น</h3>
+                <ul id="detail-features"></ul>
+                <button class="buy-button" id="detail-buy-button">เพิ่มลงตะกร้า</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const products = {
+        'phara-supra': {
+            name: 'Phara GR Supra',
+            price: 8500000,
+            image: 'img/ติ๋ม1.png',
+            specs: [
+                'เครื่องยนต์: 3.0L Turbocharged Inline-6',
+                'แรงม้าสูงสุด: 382 แรงม้า',
+                'แรงบิดสูงสุด: 500 นิวตัน-เมตร',
+                'อัตราสิ้นเปลือง: 11.5 กม./ลิตร',
+                'ความจุถังน้ำมัน: 52 ลิตร'
+            ],
+            features: [
+                'ระบบความปลอดภัยขั้นสูง Toyota Safety Sense',
+                'ระบบเครื่องเสียง JBL Premium Sound System',
+                'การออกแบบสปอร์ตที่โดดเด่นและดุดัน',
+                'โครงสร้างตัวถังน้ำหนักเบาเพื่อสมรรถนะที่ยอดเยี่ยม'
+            ]
+        },
+        'thara-supra': {
+            name: 'Thara GR Supra',
+            price: 10500000,
+            image: 'img/ติ๋ม2.png',
+            specs: [
+                'เครื่องยนต์: 3.0L Turbocharged Inline-6',
+                'แรงม้าสูงสุด: 400 แรงม้า',
+                'แรงบิดสูงสุด: 550 นิวตัน-เมตร',
+                'อัตราสิ้นเปลือง: 10.8 กม./ลิตร',
+                'ความจุถังน้ำมัน: 52 ลิตร'
+            ],
+            features: [
+                'ชุดแต่งพิเศษ Thara Edition',
+                'ระบบควบคุมการทรงตัว VSC',
+                'จอแสดงผล Head-up Display',
+                'วัสดุภายในคุณภาพสูงและเบาะหนังแท้'
+            ]
+        },
+        'sakra-camry': {
+            name: 'Sakra Camry',
+            price: 850000,
+            image: 'img/ติ๋ม3.png',
+            specs: [
+                'เครื่องยนต์: 2.5L Hybrid Dynamic Force',
+                'แรงม้าสูงสุด: 178 แรงม้า',
+                'แรงบิดสูงสุด: 221 นิวตัน-เมตร',
+                'อัตราสิ้นเปลือง: 23.8 กม./ลิตร',
+                'ความจุถังน้ำมัน: 50 ลิตร'
+            ],
+            features: [
+                'เทคโนโลยี Hybrid ประหยัดน้ำมันสูงสุด',
+                'ระบบชาร์จแบตเตอรี่ไร้สาย',
+                'ห้องโดยสารเงียบและกว้างขวาง',
+                'ระบบนำทางในตัว'
+            ]
+        },
+        'vora-fortuner': {
+            name: 'Vora Fortuner',
+            price: 800000,
+            image: 'img/ติ๋ม4.png',
+            specs: [
+                'เครื่องยนต์: 2.8L Diesel Turbo',
+                'แรงม้าสูงสุด: 204 แรงม้า',
+                'แรงบิดสูงสุด: 500 นิวตัน-เมตร',
+                'อัตราสิ้นเปลือง: 13.5 กม./ลิตร',
+                'ความจุถังน้ำมัน: 80 ลิตร'
+            ],
+            features: [
+                'ช่วงล่างแข็งแกร่ง รองรับทุกสภาพถนน',
+                'ระบบขับเคลื่อน 4 ล้อ',
+                'ระบบช่วยการขับขี่ในที่ลาดชัน',
+                'การตกแต่งภายในที่หรูหรา'
+            ]
+        }
+    };
+
+    let cart = [];
+
+    function showPage(pageId) {
+        document.getElementById('product-list-page').style.display = 'none';
+        document.getElementById('product-detail-page').style.display = 'none';
+        document.getElementById(pageId).style.display = 'block';
+    }
+
+    function showProductDetail(productId) {
+        const product = products[productId];
+        if (!product) return;
+
+        document.getElementById('detail-img').src = product.image;
+        document.getElementById('detail-img').alt = product.name;
+        document.getElementById('detail-name').innerText = product.name;
+        document.getElementById('detail-price').innerText = `ราคา: ${product.price.toLocaleString()} บาท`;
+        
+        const specsList = document.getElementById('detail-specs');
+        specsList.innerHTML = product.specs.map(spec => `<li>${spec}</li>`).join('');
+        
+        const featuresList = document.getElementById('detail-features');
+        featuresList.innerHTML = product.features.map(feature => `<li>${feature}</li>`).join('');
+        
+        const buyButton = document.getElementById('detail-buy-button');
+        buyButton.onclick = () => {
+            addToCart(product.name, product.price);
+            showPage('product-list-page'); // กลับไปหน้าตะกร้าเมื่อเพิ่มสินค้าแล้ว
+        };
+
+        showPage('product-detail-page');
+    }
+
+    function loadCart() {
+        const saved = localStorage.getItem("cart");
+        if (saved) {
+            cart = JSON.parse(saved);
+            renderCart();
+        }
+    }
+
+    function saveCart() {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function addToCart(name, price) {
+        cart.push({ name, price });
+        saveCart();
+        renderCart();
+        alert(`${name} ถูกเพิ่มลงในตะกร้าแล้ว!`);
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        saveCart();
+        renderCart();
+    }
+
+    function renderCart() {
+        const list = document.getElementById("cart-items");
+        const total = document.getElementById("total");
+        let sum = 0;
+        list.innerHTML = "";
+        cart.forEach((item, i) => {
+            sum += item.price;
+            list.innerHTML += `
+                <div class="cart-item">
+                    <span>${item.name} (${item.price.toLocaleString()} บาท)</span>
+                    <button onclick="removeFromCart(${i})">ลบ</button>
+                </div>
+            `;
+        });
+        total.innerText = "รวม: " + sum.toLocaleString() + " บาท";
+        calculateInstallment();
+    }
+
+    function getSelectedPaymentMethod() {
+        const methods = document.getElementsByName("payment");
+        for (const m of methods) {
+            if (m.checked) return m.value;
+        }
+        return "ไม่ระบุ";
+    }
+
+    function onPaymentMethodChange() {
+        const paymentMethods = document.getElementsByName('payment');
+        const installmentGroup = document.getElementById('installment-group');
+        let selected = null;
+        for (const pm of paymentMethods) {
+            if (pm.checked) {
+                selected = pm.value;
+                break;
+            }
+        }
+        if (selected === "ผ่อนชำระ") {
+            installmentGroup.style.display = 'block';
+            calculateInstallment();
+        } else {
+            installmentGroup.style.display = 'none';
+            document.getElementById('installment-info').innerText = "";
+        }
+    }
+
+    function calculateInstallment() {
+        const paymentMethod = getSelectedPaymentMethod();
+        const installmentInfo = document.getElementById('installment-info');
+        if (paymentMethod !== "ผ่อนชำระ") return;
+
+        const monthsInput = document.getElementById('installment-months');
+        const months = parseInt(monthsInput.value);
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+        if (total === 0) {
+            installmentInfo.innerText = "ไม่มียอดสินค้าในตะกร้า";
+            return;
+        }
+
+        if (months > 0) {
+            const monthlyPayment = total / months;
+            installmentInfo.innerText = `ยอดผ่อนชำระต่อเดือน: ${monthlyPayment.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+        } else {
+            installmentInfo.innerText = "กรุณาระบุจำนวนงวดผ่อน";
+        }
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            alert("กรุณาเพิ่มสินค้าในตะกร้าก่อน");
+            return;
+        }
+
+        const buyerName = document.getElementById('buyer-name').value;
+        const buyerPhone = document.getElementById('buyer-phone').value;
+        const buyerEmail = document.getElementById('buyer-email').value;
+        const pickupDate = document.getElementById('pickup-date').value;
+        const pickupTime = document.getElementById('pickup-time').value;
+        const pickupLocation = document.getElementById('pickup-location').value;
+
+        if (!buyerName || !buyerPhone || !buyerEmail || !pickupDate || !pickupTime || !pickupLocation) {
+            alert("กรุณากรอกข้อมูลผู้ซื้อและข้อมูลนัดรับรถให้ครบถ้วน");
+            return;
+        }
+        
+        const paymentMethod = getSelectedPaymentMethod();
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        let orderDetails = {
+            date: new Date().toLocaleString(),
+            items: cart.map(item => ({ name: item.name, price: item.price })),
+            total: total,
+            buyerInfo: {
+                name: buyerName,
+                phone: buyerPhone,
+                email: buyerEmail
+            },
+            paymentMethod: paymentMethod,
+            pickupInfo: {
+                date: pickupDate,
+                time: pickupTime,
+                location: pickupLocation
+            }
+        };
+
+        if (paymentMethod === "ผ่อนชำระ") {
+            const months = document.getElementById('installment-months').value;
+            const monthlyPayment = total / months;
+            orderDetails.installment = {
+                months: months,
+                monthlyPayment: monthlyPayment
+            };
+        }
+
+        let history = JSON.parse(localStorage.getItem("history")) || [];
+        history.push(orderDetails);
+        localStorage.setItem("history", JSON.stringify(history));
+
+        alert("สั่งซื้อสำเร็จแล้ว! ข้อมูลของคุณจะถูกส่งไปที่ฝ่ายขายเพื่อยืนยัน");
+        
+        cart = [];
+        saveCart();
+        renderCart();
+        
+        document.getElementById('buyer-name').value = '';
+        document.getElementById('buyer-phone').value = '';
+        document.getElementById('buyer-email').value = '';
+        document.getElementById('pickup-date').value = '';
+        document.getElementById('pickup-time').value = '';
+        document.getElementById('pickup-location').value = '';
+        
+        showHistory();
+    }
+
+    function showHistory() {
+        const historyList = document.getElementById("history-list");
+        const history = JSON.parse(localStorage.getItem("history")) || [];
+
+        if (history.length === 0) {
+            historyList.innerHTML = "ยังไม่มีประวัติการสั่งซื้อ";
+            return;
+        }
+
+        historyList.innerHTML = "";
+        history.forEach((order, i) => {
+            const orderTotal = order.items.reduce((sum, item) => sum + item.price, 0);
+            const itemsHtml = order.items.map(item => `<li>${item.name} (${item.price.toLocaleString()} บาท)</li>`).join('');
+            
+            let installmentHtml = '';
+            if (order.installment) {
+                installmentHtml = `<p><strong>ยอดผ่อนชำระต่อเดือน:</strong> ${order.installment.monthlyPayment.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท</p>`;
+            }
+
+            historyList.innerHTML += `
+                <div style="border-top: 1px solid #333; padding-top: 1rem; margin-top: 1rem;">
+                    <h4>คำสั่งซื้อ #${i + 1}</h4>
+                    <p><strong>วันที่สั่งซื้อ:</strong> ${order.date}</p>
+                    <p><strong>ผู้ซื้อ:</strong> ${order.buyerInfo.name}</p>
+                    <p><strong>วิธีการชำระเงิน:</strong> ${order.paymentMethod}</p>
+                    <p><strong>รวมทั้งสิ้น:</strong> ${orderTotal.toLocaleString()} บาท</p>
+                    ${installmentHtml}
+                    <p><strong>รายการสินค้า:</strong></p>
+                    <ul>${itemsHtml}</ul>
+                    <p><strong>ข้อมูลนัดรับ:</strong> วันที่ ${order.pickupInfo.date}, เวลา ${order.pickupInfo.time}, สถานที่ ${order.pickupInfo.location}</p>
+                </div>
+            `;
+        });
+    }
+
+    function clearHistory() {
+        if (confirm("คุณแน่ใจหรือไม่ว่าต้องการล้างประวัติการสั่งซื้อทั้งหมด?")) {
+            localStorage.removeItem("history");
+            showHistory();
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadCart();
+        showHistory();
+        const paymentMethods = document.getElementsByName('payment');
+        paymentMethods.forEach(radio => radio.addEventListener('change', onPaymentMethodChange));
+        document.getElementById('installment-months').addEventListener('input', calculateInstallment);
+        
+        showPage('product-list-page'); // แสดงหน้าสินค้าหลักเมื่อโหลดเสร็จ
+    });
+</script>
+
+</body>
+</html>
